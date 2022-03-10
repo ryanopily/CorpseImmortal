@@ -1,0 +1,10 @@
+name: CorpseReborn
+version: 0.0.1
+main: ml.zer0dasho.corpsereborn.Main
+
+api-version: 1.18
+
+depend: [Citizens]
+
+commands:
+    corpse:

@@ -1,0 +1,50 @@
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 https://maven.apache.org/xsd/maven-4.0.0.xsd">
+  	<modelVersion>4.0.0</modelVersion>
+ 	<groupId>ml.zer0dasho</groupId>
+  	<artifactId>corpsereborn</artifactId>
+ 	<version>0.0.1</version>
+
+  	<properties>
+    	<maven.compiler.source>1.8</maven.compiler.source>
+   	 	<maven.compiler.target>1.8</maven.compiler.target>
+  	</properties>
+
+	<build>
+		<resources>
+	      	<resource>
+	        	<directory>src/main/resources</directory>
+	        	<includes>
+	         	 	<include>plugin.yml</include>
+	        	</includes>
+	      	</resource>
+	    </resources>
+	</build>
+
+  	<repositories>
+	    <repository>
+	        <id>spigot-repo</id>
+	        <url>https://hub.spigotmc.org/nexus/content/repositories/snapshots/</url>
+	    </repository>
+		<repository>
+		    <id>everything</id>
+			<url>http://repo.citizensnpcs.co/</url>
+		</repository>
+	</repositories>
+
+	<dependencies>
+		<dependency>
+	    	<groupId>org.spigotmc</groupId>
+	        <artifactId>spigot-api</artifactId>
+	        <version>1.18.2-R0.1-SNAPSHOT</version>
+	        <scope>provided</scope>
+	    </dependency>
+		<dependency>
+			<groupId>citizens</groupId>
+			<artifactId>citizens</artifactId>
+			<version>1</version>
+			<type>jar</type>
+			<scope>system</scope>
+			<systemPath>${basedir}/Citizens.jar</systemPath>
+		</dependency>
+	</dependencies>
+</project>
