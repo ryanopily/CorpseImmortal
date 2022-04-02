@@ -1,10 +1,13 @@
 package ml.zer0dasho.corpseimmortal;
 
+import java.util.ArrayList;
 import org.bukkit.Bukkit;
+import org.bukkit.ChatColor;
 import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.entity.EntityType;
 import org.bukkit.entity.Player;
+import org.bukkit.inventory.Inventory;
 import org.bukkit.scheduler.BukkitRunnable;
 
 import ml.zer0dasho.corpseimmortal.auxclasses.Corpse;
@@ -17,7 +20,7 @@ import net.citizensnpcs.util.PlayerAnimation;
 public class CorpseImmortalAPI {
 
 	private final NPCRegistry registry;
-	
+	private static ArrayList<Corpse> corpses;
 	
 	CorpseImmortalAPI() {
 		this.registry = CitizensAPI.createAnonymousNPCRegistry(new MemoryNPCDataStore());
@@ -28,12 +31,32 @@ public class CorpseImmortalAPI {
 	}
 
 	public Corpse getCorpseFromNPC(NPC npc) {
+		for(Corpse corpse : corpses){
+			if(corpse.getBody().equals(npc)){
+				return corpse;
+			}
+		}
+		Bukkit.getConsoleSender().sendMessage("CorpseImmortalAPI.getCorpseFromNPC()"
+				+ ": npc " + npc.getName() + " returned null");
 		return null;
 	}
 	
 	@SuppressWarnings("deprecation")
-	public NPC spawnCorpse(String name, Location location) {
+	/**
+	 * Used to spawn in the corpse of a player given that player's name and their location.
+	 * @param name = players name
+	 * @param location = players location
+	 */
+	public Corpse spawnCorpse(String name, Location location) {
 		NPC npc = registry.createNPC(EntityType.PLAYER, name);
+		Inventory corpseInventory = Bukkit.createInventory(null, 45);
+		Corpse newCorpse = new Corpse(npc, corpseInventory);
+		Player deadPlayer = Bukkit.getPlayer(name);
+		if(deadPlayer != null){ //Player is online
+			corpseInventory.setContents(deadPlayer.getInventory().getContents());
+			deadPlayer.getInventory().clear();
+		}
+		corpses.add(newCorpse);
 		npc.spawn(location);
 		
 		location.setY(-60);
@@ -51,8 +74,7 @@ public class CorpseImmortalAPI {
 					PlayerAnimation.SLEEP.play((Player)npc.getEntity());
 			}
 		}.runTaskTimer(CorpseImmortal.plugin, 0L, 10L);
-		
-		return npc;
+		return newCorpse;
 	}
 	
 	public void destroyAll() {
