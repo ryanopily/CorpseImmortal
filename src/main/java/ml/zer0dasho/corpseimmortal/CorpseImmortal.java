@@ -1,9 +1,10 @@
 package ml.zer0dasho.corpseimmortal;
-import ml.zer0dasho.corpseimmortal.events.CorpseClickListener;
 import org.bukkit.Bukkit;
 import org.bukkit.event.Listener;
 import org.bukkit.plugin.java.JavaPlugin;
+
 import ml.zer0dasho.corpseimmortal.commands.CorpseCmd;
+import ml.zer0dasho.corpseimmortal.events.CorpseClickListener;
 
 public class CorpseImmortal extends JavaPlugin implements Listener {
 	

@@ -5,6 +5,7 @@ import org.bukkit.entity.Entity;
 import org.bukkit.inventory.Inventory;
 
 public class Corpse {
+	
   Entity hitbox;
   NPC body;
   Inventory inventory;
@@ -12,4 +13,6 @@ public class Corpse {
   public Corpse(NPC npc, Inventory inventory){
 
   }
+  
+  
 }

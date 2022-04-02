@@ -7,6 +7,7 @@ import org.bukkit.entity.EntityType;
 import org.bukkit.entity.Player;
 import org.bukkit.scheduler.BukkitRunnable;
 
+import ml.zer0dasho.corpseimmortal.auxclasses.Corpse;
 import net.citizensnpcs.api.CitizensAPI;
 import net.citizensnpcs.api.npc.MemoryNPCDataStore;
 import net.citizensnpcs.api.npc.NPC;
@@ -15,7 +16,8 @@ import net.citizensnpcs.util.PlayerAnimation;
 
 public class CorpseImmortalAPI {
 
-	private NPCRegistry registry;
+	private final NPCRegistry registry;
+	
 	
 	CorpseImmortalAPI() {
 		this.registry = CitizensAPI.createAnonymousNPCRegistry(new MemoryNPCDataStore());
@@ -23,6 +25,10 @@ public class CorpseImmortalAPI {
 	
 	public Iterable<NPC> getCorpses() {
 		return registry.sorted();
+	}
+
+	public Corpse getCorpseFromNPC(NPC npc) {
+		return null;
 	}
 	
 	@SuppressWarnings("deprecation")
