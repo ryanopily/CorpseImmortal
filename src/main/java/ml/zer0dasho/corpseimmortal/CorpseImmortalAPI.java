@@ -6,6 +6,7 @@ import org.bukkit.ChatColor;
 import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.entity.EntityType;
+import org.bukkit.entity.LivingEntity;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.Inventory;
 import org.bukkit.scheduler.BukkitRunnable;
@@ -21,7 +22,7 @@ public class CorpseImmortalAPI {
 
 	private final NPCRegistry registry;
 	private static ArrayList<Corpse> corpses;
-	
+
 	CorpseImmortalAPI() {
 		this.registry = CitizensAPI.createAnonymousNPCRegistry(new MemoryNPCDataStore());
 	}
@@ -79,5 +80,14 @@ public class CorpseImmortalAPI {
 	
 	public void destroyAll() {
 		getCorpses().forEach(NPC::destroy);
+	}
+
+	public Corpse getCorpseFromHitbox(LivingEntity e){
+		for(Corpse corpse : corpses){
+			if(corpse.getHitbox().equals(e)){
+				return corpse;
+			}
+		}
+		return null;
 	}
 }
