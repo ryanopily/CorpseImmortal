@@ -51,15 +51,16 @@ public class CorpseImmortalAPI {
 	public Corpse spawnCorpse(String name, Location location) {
 		NPC npc = registry.createNPC(EntityType.PLAYER, name);
 		Inventory corpseInventory = Bukkit.createInventory(null, 45);
+		npc.spawn(location);
 		Corpse newCorpse = new Corpse(npc, corpseInventory);
 		Player deadPlayer = Bukkit.getPlayer(name);
 		if(deadPlayer != null){ //Player is online
 			corpseInventory.setContents(deadPlayer.getInventory().getContents());
 			deadPlayer.getInventory().clear();
 		}
+
 		corpses.add(newCorpse);
-		npc.spawn(location);
-		
+
 		location.setY(-60);
 		Bukkit.getOnlinePlayers().forEach(p -> p.sendBlockChange(location, Material.RED_BED, (byte)0));
 		
