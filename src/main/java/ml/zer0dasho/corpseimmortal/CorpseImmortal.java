@@ -28,4 +28,6 @@ public class CorpseImmortal extends JavaPlugin implements Listener {
 	public void onDisable() {
 		CorpseImmortal.API.destroyAll();
 	}
+	
+	
 }

@@ -11,26 +11,27 @@ import org.bukkit.potion.PotionEffectType;
 
 public class Corpse {
 	
-  private LivingEntity hitbox;
   private NPC body;
   private Inventory inventory;
+  private LivingEntity hitbox;
 
   public Corpse(NPC npc, Inventory inventory){
-    body = npc;
-    initializeHitbox(npc);
+    this.body = npc;
     this.inventory = inventory;
+    initializeHitbox(npc);
   }
+  
   public void initializeHitbox(NPC npc){
-    hitbox = (LivingEntity) npc.getStoredLocation().getWorld().spawnEntity(npc.getStoredLocation(),
-        EntityType.AXOLOTL);
-    getHitbox().addPotionEffect(new PotionEffect(PotionEffectType.DAMAGE_RESISTANCE, 1000000, 100,
-        true));
+    hitbox = (LivingEntity) npc.getStoredLocation().getWorld().spawnEntity(npc.getStoredLocation(), EntityType.AXOLOTL);
+    npc.getEntity().addPassenger(hitbox);
+    hitbox.setCollidable(false);
+    
+    getHitbox().addPotionEffect(new PotionEffect(PotionEffectType.DAMAGE_RESISTANCE, 1000000, 100, true));
     getHitbox().addPotionEffect(new PotionEffect(PotionEffectType.FIRE_RESISTANCE, 1000000, 100, true));
     getHitbox().addPotionEffect(new PotionEffect(PotionEffectType.SLOW, 1000000, 100, true));
-
     getHitbox().addPotionEffect(new PotionEffect(PotionEffectType.WEAKNESS, 1000000, 100, true));
     getHitbox().addPotionEffect(new PotionEffect(PotionEffectType.WATER_BREATHING, 1000000, 100, true));
-    getHitbox().addPotionEffect(new PotionEffect(PotionEffectType.INVISIBILITY, 1000000, 100, true));
+    //getHitbox().addPotionEffect(new PotionEffect(PotionEffectType.INVISIBILITY, 1000000, 100, true));
   }
 
   public NPC getBody() {
