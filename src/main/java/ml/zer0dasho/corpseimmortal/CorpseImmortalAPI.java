@@ -22,16 +22,26 @@ import net.citizensnpcs.util.PlayerAnimation;
 
 public class CorpseImmortalAPI {
 
-	private final NPCRegistry registry;
 	private Map<Entity, Corpse> corpses;
+	private final NPCRegistry registry;
 
 	CorpseImmortalAPI() {
-		this.registry = CitizensAPI.createAnonymousNPCRegistry(new MemoryNPCDataStore());
 		this.corpses = new HashMap<>();
+		this.registry = CitizensAPI.createAnonymousNPCRegistry(new MemoryNPCDataStore());
 	}
 	
-	public Iterable<NPC> getCorpses() {
-		return registry.sorted();
+	public Iterable<Corpse> getCorpses() {
+		return corpses.values();
+	}
+	
+	public Corpse getCorpseFromHitbox(LivingEntity e){
+		return corpses.get(e);
+	}
+	
+	public void destroyCorpse(Corpse corpse) {
+		corpses.remove(corpse.getHitbox());
+		corpse.getHitbox().remove();
+		corpse.getBody().destroy();
 	}
 	
 	@SuppressWarnings("deprecation")
@@ -41,17 +51,22 @@ public class CorpseImmortalAPI {
 	 * @param location = players location
 	 */
 	public Corpse spawnCorpse(String name, Location location) {
+		
+		/* Spawn corpse's body */
 		NPC npc = registry.createNPC(EntityType.PLAYER, name);
 		Inventory corpseInventory = Bukkit.createInventory(null, 45);
 		npc.spawn(location);
 		
-		Corpse newCorpse = new Corpse(npc, corpseInventory);
+		/* Register corpse and set its inventory */
 		Player deadPlayer = Bukkit.getPlayer(name);
-		if(deadPlayer != null){ //Player is online
-			corpseInventory.setContents(deadPlayer.getInventory().getContents());
-		}
+		Corpse newCorpse = new Corpse(npc, corpseInventory);
+		
+		if(deadPlayer != null) //Player is online
+			corpseInventory.setContents(deadPlayer.getInventory().getContents().clone());
+		
 		corpses.put(newCorpse.getHitbox(), newCorpse);
 
+		/* Put corpse into the sleeping position */
 		location.setY(-60);
 		Bukkit.getOnlinePlayers().forEach(p -> p.sendBlockChange(location, Material.RED_BED, (byte)0));
 		
@@ -71,10 +86,6 @@ public class CorpseImmortalAPI {
 	}
 	
 	public void destroyAll() {
-		getCorpses().forEach(NPC::destroy);
-	}
-
-	public Corpse getCorpseFromHitbox(LivingEntity e){
-		return corpses.get(e);
+		getCorpses().forEach(this::destroyCorpse);
 	}
 }

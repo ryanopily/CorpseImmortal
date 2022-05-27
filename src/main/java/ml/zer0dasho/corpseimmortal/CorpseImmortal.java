@@ -18,7 +18,7 @@ public class CorpseImmortal extends JavaPlugin implements Listener {
 		CorpseImmortal.API = new CorpseImmortalAPI();
 		CorpseImmortal.events = new CorpseClickListener();
 		
-		CorpseImmortal.API.spawnCorpse("Timbome", Bukkit.getWorlds().get(0).getSpawnLocation());
+//		CorpseImmortal.API.spawnCorpse("Timbome", Bukkit.getWorlds().get(0).getSpawnLocation());
 		
 		getCommand("corpse").setExecutor(new CorpseCmd());
 		Bukkit.getPluginManager().registerEvents(events, this);
@@ -28,6 +28,4 @@ public class CorpseImmortal extends JavaPlugin implements Listener {
 	public void onDisable() {
 		CorpseImmortal.API.destroyAll();
 	}
-	
-	
 }

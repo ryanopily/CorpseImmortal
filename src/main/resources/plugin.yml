@@ -8,3 +8,8 @@ depend: [Citizens]
 
 commands:
     corpse:
+        permission: corpseimmortal.corpse
+
+permissions:
+    corpseimmortal.corpse:
+        default: op
