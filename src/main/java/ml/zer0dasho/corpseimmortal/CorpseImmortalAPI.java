@@ -6,12 +6,15 @@ import java.util.Map;
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
 import org.bukkit.Material;
+import org.bukkit.OfflinePlayer;
 import org.bukkit.entity.Entity;
 import org.bukkit.entity.EntityType;
 import org.bukkit.entity.LivingEntity;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.Inventory;
 import org.bukkit.scheduler.BukkitRunnable;
+
+import com.google.common.collect.ImmutableList;
 
 import ml.zer0dasho.corpseimmortal.auxclasses.Corpse;
 import net.citizensnpcs.api.CitizensAPI;
@@ -58,11 +61,11 @@ public class CorpseImmortalAPI {
 		npc.spawn(location);
 		
 		/* Register corpse and set its inventory */
-		Player deadPlayer = Bukkit.getPlayer(name);
-		Corpse newCorpse = new Corpse(npc, corpseInventory);
+		OfflinePlayer deadPlayer = Bukkit.getOfflinePlayer(name);
+		Corpse newCorpse = new Corpse(npc, deadPlayer.getUniqueId(), corpseInventory);
 		
-		if(deadPlayer != null) //Player is online
-			corpseInventory.setContents(deadPlayer.getInventory().getContents().clone());
+		if(deadPlayer.isOnline()) //Player is online
+			corpseInventory.setContents(((Player)deadPlayer).getInventory().getContents().clone());
 		
 		corpses.put(newCorpse.getHitbox(), newCorpse);
 
@@ -86,6 +89,12 @@ public class CorpseImmortalAPI {
 	}
 	
 	public void destroyAll() {
-		getCorpses().forEach(this::destroyCorpse);
+		try {
+			ImmutableList.copyOf(getCorpses()).forEach(this::destroyCorpse);
+		} 
+		
+		catch(Exception ex) {
+			
+		}
 	}
 }

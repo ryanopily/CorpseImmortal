@@ -1,5 +1,7 @@
 package ml.zer0dasho.corpseimmortal.auxclasses;
 
+import java.util.UUID;
+
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
 import org.bukkit.entity.EntityType;
@@ -11,17 +13,19 @@ import org.bukkit.potion.PotionEffectType;
 import net.citizensnpcs.api.npc.NPC;
 
 public class Corpse {
-	
+
   private NPC body;
+  private UUID id;
   private Inventory inventory;
   private LivingEntity hitbox;
   
-  public Corpse(NPC npc) {
-	  this(npc, Bukkit.createInventory(null, 45));
+  public Corpse(NPC npc, UUID id) {
+	  this(npc, id, Bukkit.createInventory(null, 45));
   }
 
-  public Corpse(NPC npc, Inventory inventory){
+  public Corpse(NPC npc, UUID id, Inventory inventory){
     this.body = npc;
+    this.id = id;
     this.inventory = inventory;
     this.hitbox = initializeHitbox(npc);
   }
@@ -52,5 +56,9 @@ public class Corpse {
 
   public LivingEntity getHitbox() {
     return hitbox;
+  }
+  
+  public UUID getId() {
+	return id;
   }
 }
