@@ -1,15 +1,8 @@
 name: CorpseImmortal
-version: 0.0.1
+version: 1.0.0
 main: ml.zer0dasho.corpseimmortal.CorpseImmortal
 
-api-version: 1.18
-
+api-version: 1.19
+authors: ["0-o#9646", "MagicMarks"]
 depend: [Citizens]
 
-commands:
-    corpse:
-        permission: corpseimmortal.corpse
-
-permissions:
-    corpseimmortal.corpse:
-        default: op

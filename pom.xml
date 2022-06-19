@@ -1,13 +1,15 @@
 <project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 https://maven.apache.org/xsd/maven-4.0.0.xsd">
   	<modelVersion>4.0.0</modelVersion>
- 	<groupId>ml.zer0dasho</groupId>
+ 	
+	<groupId>ml.zer0dasho</groupId>
   	<artifactId>corpseimmortal</artifactId>
- 	<version>0.0.1</version>
+ 	<version>1.0.0</version>
 
-  	<properties>
-    	<maven.compiler.source>1.8</maven.compiler.source>
-   	 	<maven.compiler.target>1.8</maven.compiler.target>
-  	</properties>
+	<properties>
+	     <maven.compiler.source>1.8</maven.compiler.source>
+	     <maven.compiler.target>1.8</maven.compiler.target>
+	</properties>
+
 
 	<build>
 		<resources>
@@ -35,16 +37,15 @@
 		<dependency>
 	    	<groupId>org.spigotmc</groupId>
 	        <artifactId>spigot-api</artifactId>
-	        <version>1.18.2-R0.1-SNAPSHOT</version>
+	        <version>1.19-R0.1-SNAPSHOT</version>
 	        <scope>provided</scope>
 	    </dependency>
+
 		<dependency>
-			<groupId>citizens</groupId>
+			<groupId>net.citizensnpcs</groupId>
 			<artifactId>citizens</artifactId>
-			<version>1</version>
-			<type>jar</type>
-			<scope>system</scope>
-			<systemPath>${basedir}/Citizens.jar</systemPath>
+			<version>2.0.3</version>
+			<scope>provided</scope>
 		</dependency>
 	</dependencies>
 </project>

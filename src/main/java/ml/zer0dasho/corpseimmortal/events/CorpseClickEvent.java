@@ -7,31 +7,31 @@ import org.bukkit.event.HandlerList;
 import ml.zer0dasho.corpseimmortal.auxclasses.Corpse;
 
 public class CorpseClickEvent extends Event {
-	
-  private static final HandlerList handlers = new HandlerList();
-  private Corpse corpse;
-  private Player clicker;
 
-  public CorpseClickEvent(Corpse corpse, Player clicker) {
-    this.corpse = corpse;
-    this.clicker = clicker;
-  }
+	private Corpse corpse;
+	private Player clicker;
 
-  @Override
-  public HandlerList getHandlers() {
-    return handlers;
-  }
+	public CorpseClickEvent(Corpse corpse, Player clicker) {
+		this.corpse = corpse;
+		this.clicker = clicker;
+	}
 
-  public static HandlerList getHandlerList() {
-    return handlers;
-  }
+  	public Corpse getCorpse() {
+	  return corpse;
+  	}
 
-  public Corpse getCorpse() {
-    return corpse;
-  }
+  	public Player getClicker() {
+	  return clicker;
+  	}
+  	
+	private static final HandlerList HANDLERS = new HandlerList();
+  	
+	@Override
+	public HandlerList getHandlers() {
+		return HANDLERS;
+	}
 
-  public Player getClicker() {
-    return clicker;
-  }
-
+	public static HandlerList getHandlerList() {
+		return HANDLERS;
+  	}
 }

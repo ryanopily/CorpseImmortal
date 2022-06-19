@@ -25,31 +25,20 @@ import net.citizensnpcs.util.PlayerAnimation;
 
 public class CorpseImmortalAPI {
 
-	private Map<Entity, Corpse> corpses;
+	private Map<Entity, Corpse> hitboxes;
+	private Map<Inventory, Corpse> inventories;
+	
 	private final NPCRegistry registry;
 
 	CorpseImmortalAPI() {
-		this.corpses = new HashMap<>();
+		this.hitboxes = new HashMap<>();
+		this.inventories = new HashMap<>();
 		this.registry = CitizensAPI.createAnonymousNPCRegistry(new MemoryNPCDataStore());
 	}
 	
-	public Iterable<Corpse> getCorpses() {
-		return corpses.values();
-	}
-	
-	public Corpse getCorpseFromHitbox(LivingEntity e){
-		return corpses.get(e);
-	}
-	
-	public void destroyCorpse(Corpse corpse) {
-		corpses.remove(corpse.getHitbox());
-		corpse.getHitbox().remove();
-		corpse.getBody().destroy();
-	}
-	
-	@SuppressWarnings("deprecation")
 	/**
 	 * Used to spawn in the corpse of a player given that player's name and their location.
+	 * 
 	 * @param name = players name
 	 * @param location = players location
 	 */
@@ -57,23 +46,24 @@ public class CorpseImmortalAPI {
 		
 		/* Spawn corpse's body */
 		NPC npc = registry.createNPC(EntityType.PLAYER, name);
-		Inventory corpseInventory = Bukkit.createInventory(null, 45);
 		npc.spawn(location);
-		
+
 		/* Register corpse and set its inventory */
+		@SuppressWarnings("deprecation")
 		OfflinePlayer deadPlayer = Bukkit.getOfflinePlayer(name);
-		Corpse newCorpse = new Corpse(npc, deadPlayer.getUniqueId(), corpseInventory);
+		Corpse corpse = new Corpse(npc, deadPlayer.getUniqueId());
 		
-		if(deadPlayer.isOnline()) //Player is online
-			corpseInventory.setContents(((Player)deadPlayer).getInventory().getContents().clone());
+		if(deadPlayer.isOnline())
+			corpse.getInventory().setContents(((Player)deadPlayer).getInventory().getContents().clone());
 		
-		corpses.put(newCorpse.getHitbox(), newCorpse);
+		hitboxes.put(corpse.getHitbox(), corpse);
+		inventories.put(corpse.getInventory(), corpse);
 
 		/* Put corpse into the sleeping position */
-		location.setY(-60);
-		Bukkit.getOnlinePlayers().forEach(p -> p.sendBlockChange(location, Material.RED_BED, (byte)0));
+		Bukkit.getOnlinePlayers().forEach(p -> p.sendBlockChange(location, Material.RED_BED.createBlockData()));
 		
 		new BukkitRunnable() {
+			
 			int ticks = 0;
 			
 			@Override
@@ -84,17 +74,55 @@ public class CorpseImmortalAPI {
 				if(npc.isSpawned())
 					PlayerAnimation.SLEEP.play((Player)npc.getEntity());
 			}
-		}.runTaskTimer(CorpseImmortal.plugin, 0L, 10L);
-		return newCorpse;
+		}.runTaskTimer(CorpseImmortal.plugin(), 0L, 10L);
+		
+		return corpse;
 	}
 	
+	/**
+	 * Destroy a corpse, including its hitbox and body.
+	 * 
+	 * @param corpse
+	 */
+	public void destroyCorpse(Corpse corpse) {
+		hitboxes.remove(corpse.getHitbox());
+		inventories.remove(corpse.getInventory());
+		corpse.getHitbox().remove();
+		corpse.getBody().destroy();
+	}
+	
+	/**
+	 * Destroy all corpses, including hitboxes and bodies.
+	 */
 	public void destroyAll() {
-		try {
-			ImmutableList.copyOf(getCorpses()).forEach(this::destroyCorpse);
-		} 
-		
-		catch(Exception ex) {
-			
-		}
+		ImmutableList.copyOf(getCorpses()).forEach(this::destroyCorpse);
+	}
+	
+	/**
+	 * Get all registered corpses.
+	 * 
+	 * @return
+	 */
+	public Iterable<Corpse> getCorpses() {
+		return hitboxes.values();
+	}
+	
+	/**
+	 * Get a corpse given its hitbox.
+	 * 
+	 * @param e
+	 * @return
+	 */
+	public Corpse getCorpseFromHitbox(LivingEntity e){
+		return hitboxes.get(e);
+	}
+	
+	/**
+	 * Get a corpse given its inventory.
+	 * @param i
+	 * @return
+	 */
+	public Corpse getCorpseFromInventory(Inventory i) {
+		return inventories.get(i);
 	}
 }
