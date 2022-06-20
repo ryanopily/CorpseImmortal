@@ -5,6 +5,7 @@ import org.bukkit.entity.LivingEntity;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.entity.EntityDamageEvent;
+import org.bukkit.event.entity.PlayerDeathEvent;
 import org.bukkit.event.inventory.InventoryCloseEvent;
 import org.bukkit.event.player.PlayerInteractAtEntityEvent;
 
@@ -12,6 +13,12 @@ import ml.zer0dasho.corpseimmortal.CorpseImmortal;
 import ml.zer0dasho.corpseimmortal.auxclasses.Corpse;
 
 public class CorpseClickListener implements Listener {
+	
+	@EventHandler
+	public void onDeath(PlayerDeathEvent e) {
+		CorpseImmortal.API().spawnCorpse(e.getEntity().getName(), e.getEntity().getLocation());
+		e.getDrops().clear();
+	}
 	
 	  @EventHandler
 	  public void onCorpseClick(PlayerInteractAtEntityEvent e) {
