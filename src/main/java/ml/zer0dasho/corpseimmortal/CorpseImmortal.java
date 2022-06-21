@@ -7,6 +7,7 @@ import ml.zer0dasho.corpseimmortal.events.CorpseClickListener;
 
 public class CorpseImmortal extends JavaPlugin implements Listener {
 
+	//comment to test jenkins
 	@Override
 	public void onEnable() {
 		CorpseImmortal.plugin = this;
