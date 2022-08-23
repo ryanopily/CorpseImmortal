@@ -58,9 +58,6 @@ public class CorpseImmortalAPI {
 		
 		hitboxes.put(corpse.getHitbox(), corpse);
 		inventories.put(corpse.getInventory(), corpse);
-
-		/* Put corpse into the sleeping position */
-		Bukkit.getOnlinePlayers().forEach(p -> p.sendBlockChange(location, Material.RED_BED.createBlockData()));
 		
 		new BukkitRunnable() {
 			
